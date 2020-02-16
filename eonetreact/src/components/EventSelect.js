@@ -35,6 +35,11 @@ class Countries extends React.Component {
     });
   }
 
+  handleChange = (event) =>
+  {
+      let selectedValue = event.target.value;
+      this.props.onSelectChange(selectedValue);
+  }
 
   render () {
     const { countries } = this.state;
@@ -48,11 +53,13 @@ class Countries extends React.Component {
     }, this);
 
     return (
+      
       <div>
-        <select value={this.state.selectedTeam}>
-          {countriesList}
-        </select>
-      </div>
+      <select value={this.state.selectedTeam}
+       onChange={this.handleChange}>
+      {countriesList}
+      </select>
+    </div>
     );
   }
 }

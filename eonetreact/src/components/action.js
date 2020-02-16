@@ -19,7 +19,8 @@ class App extends Component {
       userData: {},  
       response: {},
       evcategories:{}, 
-      selectedCat:0,  
+      selectedCat:0,
+      selectedValue: 'Nothing selected'  
     };  
   }  
   
@@ -81,7 +82,38 @@ getCategories () {
 
 }
 
-  
+Search (id) {
+  this.state.users=[];
+  axios.get(apiUrl + "/FilterEvents?status=open&category="+this.state.selectedValue).then(response => response.data).then(  
+         (result)=>{  
+             this.setState({  
+                 users:result  
+             });  
+         },  
+         (error)=>{  
+             this.setState({error});  
+         }  
+     )  
+}
+
+Sort() {  
+  axios.get(apiUrl + "/getEventDetails?EventID=").then(response => response.data).then(result => {  
+    this.setState({  
+    userData: result
+   });  
+    },  
+    (error) => {  
+      this.setState({ error });  
+    }  
+    )  
+
+    this.setState({  
+    isOpen: !this.state.isOpen  
+    });  
+    //alert(this.state.userData);
+    console.log(this.state.selectedCat);
+}   
+
   
   toggleModal(id) {  
          axios.get(apiUrl + "/getEventDetails?EventID="+id).then(response => response.data).then(result => {  
@@ -102,33 +134,41 @@ getCategories () {
   console.log(this.state.selectedCat);
   }  
   
+  handleSelectChange = (selectedValue) =>{
+    this.setState({
+      selectedValue: selectedValue
+    });
+   
+  }
+
   render() {  
     const{users}=this.state;  
-    return (  
-      <div className="App">  
-        <div className="row">
-        <div className="col-md-6">
-        
-        </div>
-        <div className="col-lg-6">
-          State:<select><option>Open</option><option>Closed</option></select> <br/>
-          Categorey:<Countries selectedTeam={this.state.userData.categories}></Countries>
-        </div>
-        </div>  
-        <div>  
-        <div className="row">  
-        <div className="col-md-3">
-        
-        
-        </div>  
-        <div className="col-md-6">  
+    return ( 
+    <div className="App">
+  <div className="row">Event Details</div>  
+  <div className="row">
+  <div className="col-md-3"></div> 
+  <div className="col-sm-4">Status :<select><option>Open</option><option>Closed</option></select></div>
+  <div className="col-sm-4">Catgory<Countries  onSelectChange={this.handleSelectChange}  selectedTeam={this.state.selectedValue}></Countries></div>
+  </div>
+  <div className="row">
+  <div className="col-md-3"></div> 
+  <div className="col-sm-4"></div>
+  <div className="col-sm-4"><Button variant="info" onClick={()=>this.Search()} >Search</Button></div>
+  
+  </div>
+       
+  <div>  
+        <div className="row"> 
+        <div className="col-md-3"></div> 
+         <div className="col-md-6">  
         <Table className="table">  
                     <thead className="btn-primary">  
                       <tr>  
                         <th>id</th>                       
                         <th>Title</th>  
                         <th>Link</th>  
-                        <th>Categories</th>
+                        <th sortable-column="Catagory" onClick={()=>this.sort()} >Categories</th>
                         <th>closed</th>  
                       </tr>  
                     </thead>  

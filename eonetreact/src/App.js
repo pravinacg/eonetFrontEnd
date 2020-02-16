@@ -3,23 +3,23 @@ import Events from './components/contacts';
 import Table1 from './components/table'
 import Table from './components/table2'
 class App extends Component {
-    // render() {
-    //     return (
+    //  render() {
+    //      return (
     //         <Events contacts={this.state.events} />
     //     )
-    // }
-    // render() {
-    //     return (
-    //       <div className="App">
-    //         <p className="Table-header">Basic Table</p>
-    //         <Table data={this.state.events}/>
-    //       </div>
-    //     );
-    //   }
-    // state = {
-    //     events: []
+    //  }
+     render() {
+         return (
+           <div className="App">
+             <p className="Table-header">Basic Table</p>
+             <Table data={this.state.events}/>
+           </div>
+         );
+       }
+     state = {
+       events: []
         
-    // };
+     };
 
     
     
